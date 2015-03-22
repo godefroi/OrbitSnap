@@ -51,25 +51,54 @@ namespace OrbitSnap
 
 		public double? ArgumentPe;
 
-		public void Fix(Orbit initial)
+		public bool Matches(Orbit orbit)
 		{
-			if( initial.referenceBody.name != Body )
+			if( orbit.referenceBody.name != Body )
+				return false;
+
+			// check inclination (within 0.2 degrees)
+			if( Inclination.HasValue && Math.Abs(Inclination.Value - orbit.inclination) > 0.2d )
+				return false;
+
+			// check eccentricity (within 0.001 whatever)
+			if( Eccentricity.HasValue && Math.Abs(Eccentricity.Value - orbit.eccentricity) > 0.001d )
+				return false;
+
+			// check semi-major axis (within 0.5%, I think)
+			if( SemiMajorAxis.HasValue && Math.Abs(1d - (SemiMajorAxis.Value / orbit.semiMajorAxis)) > 0.005d )
+				return false;
+
+			// check longitude of the ascending node (within 5 degrees?)
+			if( LongitudeAN.HasValue && Math.Abs(LongitudeAN.Value - orbit.LAN) > 5d )
+				return false;
+
+			// check argument of periapsis (within 2.5 degrees?)
+			if( ArgumentPe.HasValue && Math.Abs(ArgumentPe.Value - orbit.argumentOfPeriapsis) > 2.5d )
+				return false;
+
+			// we found a very closely-matching orbit, so return it
+			return true;
+		}
+
+		public void Fix(Orbit orbit)
+		{
+			if( orbit.referenceBody.name != Body )
 				throw new InvalidOperationException("Cannot edit an orbit for the wrong reference body.");
 
 			if( Inclination.HasValue )
-				initial.inclination = Inclination.Value;
+				orbit.inclination = Inclination.Value;
 
 			if( Eccentricity.HasValue )
-				initial.eccentricity = Eccentricity.Value;
+				orbit.eccentricity = Eccentricity.Value;
 
 			if( SemiMajorAxis.HasValue )
-				initial.semiMajorAxis = SemiMajorAxis.Value;
+				orbit.semiMajorAxis = SemiMajorAxis.Value;
 
 			if( LongitudeAN.HasValue )
-				initial.LAN = LongitudeAN.Value;
+				orbit.LAN = LongitudeAN.Value;
 
 			if( ArgumentPe.HasValue )
-				initial.argumentOfPeriapsis = ArgumentPe.Value;
+				orbit.argumentOfPeriapsis = ArgumentPe.Value;
 		}
 
 		public override string ToString()

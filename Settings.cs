@@ -11,12 +11,6 @@ namespace OrbitSnap
 			Orbits = new List<OrbitInfo>();
 		}
 
-		[Persistent]
-		public string foo;
-
-		[Persistent]
-		public int bar;
-
 		public List<OrbitInfo> Orbits;
 
 		public static Settings Load(string fileName)
