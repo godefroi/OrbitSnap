@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace OrbitSnap
 	{
 		private int                             m_upcnt  = 0;
 		private Dictionary<string, List<Orbit>> m_orbits = new Dictionary<string, List<Orbit>>();
+		private string                          m_cfile  = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Orbits.cfg");
 
 		/*
 		 * Called after the scene is loaded.
@@ -40,6 +42,27 @@ namespace OrbitSnap
 			15 name=Dres
 			16 name=Eeloo 
 			*/
+
+			var s = Settings.Load(m_cfile);
+
+			Debug.Log(string.Format("OrbitSnap got {0} orbits", s.Orbits.Count));
+			foreach( var o in s.Orbits )
+				Debug.Log(o.ToString());
+			
+			/*var s = new Settings();
+
+			s.foo = "here's foo";
+			s.bar = -1;
+			s.Orbits = new List<OrbitInfo>()
+			{
+				//                inc, ecc, sma, lan, aop, mae, eph, bdy
+				new OrbitInfo(1, 2, 3),
+				new OrbitInfo(4, 5, null),
+			};
+
+			s.Save(m_cfile);*/
+
+			//FlightGlobals.Bodies.FindIndex(cb => cb.name.Equals("foo", StringComparison.OrdinalIgnoreCase))
 
 			m_orbits = new Dictionary<string,List<Orbit>>()
 			{
