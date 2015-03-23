@@ -122,7 +122,7 @@ namespace OrbitSnap
 
 				// log the correction
 				Debug.Log(string.Format("OrbitSnap: FixedUpdate correcting orbit for {0}", vessel.name));
-				print(string.Format("Correcting orbit for {0}", vessel.name));
+				ScreenMessages.PostScreenMessage(string.Format("Orbit corrected for {0}", vessel.name), 3, ScreenMessageStyle.UPPER_CENTER);
 
 				// fix the vessel's orbit
 				snap.Fix(vessel.orbit);
