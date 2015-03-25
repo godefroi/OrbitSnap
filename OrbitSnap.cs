@@ -10,9 +10,10 @@ namespace OrbitSnap
 	[KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
 	public class OrbitSnap : MonoBehaviour
 	{
-		private int      m_upcnt  = 0;
-		private string   m_cfile  = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Orbits.cfg");
-		private Settings m_settings;
+		private int           m_upcnt  = 0;
+		private string        m_cfile  = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Orbits.cfg");
+		private Settings      m_settings;
+		private ScreenMessage m_message = new ScreenMessage(string.Empty, 3, true, ScreenMessageStyle.UPPER_CENTER);
 
 		/*
 		 * Called after the scene is loaded.
@@ -120,16 +121,25 @@ namespace OrbitSnap
 				if( snap == null )
 					continue;
 
+				//Debug.Log("Orbit before correction:");
+				//ShowOrbit(vessel.orbit);
+
 				// log the correction
-				Debug.Log(string.Format("OrbitSnap: FixedUpdate correcting orbit for {0}", vessel.name));
-				ScreenMessages.PostScreenMessage(string.Format("Orbit corrected for {0}", vessel.name), 3, ScreenMessageStyle.UPPER_CENTER);
+				Debug.Log(string.Format("\t\tcorrecting orbit for {0}", vessel.name));
+				ScreenMessages.PostScreenMessage(string.Format("Orbit corrected for {0}", vessel.name), m_message);
 
 				// fix the vessel's orbit
 				snap.Fix(vessel.orbit);
 
+				//Debug.Log("Orbit after snap:");
+				//ShowOrbit(vessel.orbit);
+
 				// and set it in place
 				vessel.orbit.Init();
 				vessel.orbit.UpdateFromUT(Planetarium.GetUniversalTime());
+
+				//Debug.Log("Orbit after correction:");
+				//ShowOrbit(vessel.orbit);
 			}
 		}
 
