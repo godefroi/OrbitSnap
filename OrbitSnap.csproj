@@ -56,7 +56,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetFileName) "D:\Games\Steam\SteamApps\common\Kerbal Space Program\GameData"
-copy OrbitSnap.pdb "D:\Games\Steam\SteamApps\common\Kerbal Space Program\GameData"</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -76,6 +76,14 @@ namespace OrbitSnap
 			if( ArgumentPe.HasValue && Math.Abs(ArgumentPe.Value - orbit.argumentOfPeriapsis) > 2.5d )
 				return false;
 
+			// if it matches exactly, then no fix is needed
+			if( (!Inclination.HasValue   || (Inclination.HasValue && Inclination.Value     == orbit.inclination))   &&
+				(!Eccentricity.HasValue  || (Eccentricity.HasValue && Eccentricity.Value   == orbit.eccentricity))  &&
+				(!SemiMajorAxis.HasValue || (SemiMajorAxis.HasValue && SemiMajorAxis.Value == orbit.semiMajorAxis)) &&
+				(!LongitudeAN.HasValue   || (LongitudeAN.HasValue && LongitudeAN.Value     == orbit.LAN))           &&
+				(!ArgumentPe.HasValue    || (ArgumentPe.HasValue && ArgumentPe.Value       == orbit.argumentOfPeriapsis)) )
+				return false;
+
 			// we found a very closely-matching orbit, so return it
 			return true;
 		}
